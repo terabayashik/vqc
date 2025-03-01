@@ -1,4 +1,5 @@
-import { Box, Button, Center, Divider, Group, Stack, Text, Title } from "@mantine/core";
+import { Box, Button, Center, Divider, Group, LoadingOverlay, Stack, Text, Title } from "@mantine/core";
+import { useDisclosure } from "@mantine/hooks";
 import { basename } from "@tauri-apps/api/path";
 import { open } from "@tauri-apps/plugin-dialog";
 import { useEffect, useState } from "react";
@@ -22,6 +23,7 @@ export const FilePane = ({
 }: FilePaneProps) => {
   const [referenceBasename, setReferenceBasename] = useState<string | null>(null);
   const [comparisonBasenames, setComparisonBasenames] = useState<string[] | null>(null);
+  const [visible, { open: enableOverlay, close: disableOverlay }] = useDisclosure(false);
 
   useEffect(() => {
     if (reference) {
@@ -38,6 +40,7 @@ export const FilePane = ({
 
   return (
     <Stack h="100%">
+      <LoadingOverlay visible={visible} zIndex={1000} overlayProps={{ radius: "sm", blur: 2 }} />
       <Group h="100%" justify="center">
         <Center flex={1} p="md">
           <Stack w="100%">
@@ -100,11 +103,13 @@ export const FilePane = ({
               return;
             }
 
+            enableOverlay();
             const results: { comparison: string; stats: Stats }[] = [];
             for (const comparison of comparisons) {
               const stats = await analyze(reference, comparison);
               results.push({ comparison, stats });
             }
+            disableOverlay();
             onAnalyzeComplete(results);
           }}
         >
