@@ -94,7 +94,7 @@ export const ChartPane = ({ data, onBack }: ChartPaneProps) => {
           })}
         </Chip.Group>
       </Group>
-      <ScrollArea scrollbars="x">
+      <ScrollArea scrollbars="x" offsetScrollbars type={xScale === 100 ? "never" : "always"}>
         <LineChart
           w={`${xScale}%`}
           h={768}
