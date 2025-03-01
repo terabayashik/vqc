@@ -61,7 +61,7 @@ export const FilePane = ({
       />
       <Group h="100%" justify="center">
         <Center flex={1} p="md">
-          <Stack w="100%">
+          <Stack w="100%" maw={480}>
             <Group justify="space-between">
               <Title order={2}>リファレンス</Title>
               <Button
@@ -87,7 +87,7 @@ export const FilePane = ({
         <Divider orientation="vertical" />
 
         <Center flex={1} p="md">
-          <Stack w="100%">
+          <Stack w="100%" maw={480}>
             <Group justify="space-between">
               <Title order={2}>比較対象(複数選択可)</Title>
               <Button
