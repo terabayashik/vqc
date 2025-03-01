@@ -34,7 +34,7 @@ export const ChartPane = ({ data, onBack }: ChartPaneProps) => {
   const [dataToPlot, setDataToPlot] = useState<FrameData[]>([]);
   const [comparisonBasenames, setComparisonBasenames] = useState<string[] | null>(null);
   const [selectedComparisons, setSelectedComparisons] = useState<string[]>([]);
-  const [xScaleFactor, setXScaleFactor] = useState(100);
+  const [xScaleFactor, setXScaleFactor] = useState(0);
   const [yAxisAutoScale, setYAxisAutoScale] = useState(false);
 
   const minVmaf = data.reduce((acc, item) => {
