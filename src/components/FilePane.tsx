@@ -1,4 +1,4 @@
-import { Box, Button, Center, Divider, Group, LoadingOverlay, Stack, Text, Title } from "@mantine/core";
+import { Box, Button, Center, Divider, Group, Loader, LoadingOverlay, Stack, Text, Title } from "@mantine/core";
 import { useDisclosure } from "@mantine/hooks";
 import { basename } from "@tauri-apps/api/path";
 import { open } from "@tauri-apps/plugin-dialog";
@@ -24,6 +24,7 @@ export const FilePane = ({
   const [referenceBasename, setReferenceBasename] = useState<string | null>(null);
   const [comparisonBasenames, setComparisonBasenames] = useState<string[] | null>(null);
   const [visible, { open: enableOverlay, close: disableOverlay }] = useDisclosure(false);
+  const [progress, setProgress] = useState(0);
 
   useEffect(() => {
     if (reference) {
@@ -40,7 +41,24 @@ export const FilePane = ({
 
   return (
     <Stack h="100%">
-      <LoadingOverlay visible={visible} zIndex={1000} overlayProps={{ radius: "sm", blur: 2 }} />
+      <LoadingOverlay
+        visible={visible}
+        zIndex={1000}
+        overlayProps={{ blur: 4 }}
+        loaderProps={{
+          children: (
+            <Stack align="center">
+              <Loader color="blue" size="xl" type="bars" />
+              <Stack gap={0} align="center">
+                <Text size="xl">解析中...</Text>
+                <Text size="xl">
+                  {progress} / {comparisons?.length}
+                </Text>
+              </Stack>
+            </Stack>
+          ),
+        }}
+      />
       <Group h="100%" justify="center">
         <Center flex={1} p="md">
           <Stack w="100%">
@@ -108,6 +126,7 @@ export const FilePane = ({
             for (const comparison of comparisons) {
               const stats = await analyze(reference, comparison);
               results.push({ comparison, stats });
+              setProgress(progress + 1);
             }
             disableOverlay();
             onAnalyzeComplete(results);
