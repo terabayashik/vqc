@@ -34,7 +34,7 @@ export const ChartPane = ({ data, onBack }: ChartPaneProps) => {
   const [dataToPlot, setDataToPlot] = useState<FrameData[]>([]);
   const [comparisonBasenames, setComparisonBasenames] = useState<string[] | null>(null);
   const [selectedComparisons, setSelectedComparisons] = useState<string[]>([]);
-  const [xScale, setXScale] = useState(100);
+  const [xScaleFactor, setXScaleFactor] = useState(100);
   const [yAxisAutoScale, setYAxisAutoScale] = useState(false);
 
   const minVmaf = data.reduce((acc, item) => {
@@ -94,9 +94,9 @@ export const ChartPane = ({ data, onBack }: ChartPaneProps) => {
           })}
         </Chip.Group>
       </Group>
-      <ScrollArea scrollbars="x" offsetScrollbars type={xScale === 100 ? "never" : "always"}>
+      <ScrollArea scrollbars="x" offsetScrollbars type={xScaleFactor === 0 ? "never" : "always"} bg="gray.1" p="md">
         <LineChart
-          w={`${xScale}%`}
+          w={`${100 * 2 ** xScaleFactor}%`}
           h={768}
           data={dataToPlot}
           dataKey="frameNum"
@@ -118,7 +118,28 @@ export const ChartPane = ({ data, onBack }: ChartPaneProps) => {
       <Group align="flex-end">
         <Stack gap={0}>
           <Text size="sm">X軸スケール</Text>
-          <Slider w={240} value={xScale} onChange={setXScale} min={100} max={1000} step={100} label={`${xScale}%`} />
+          <Slider
+            w={240}
+            value={xScaleFactor}
+            onChange={setXScaleFactor}
+            min={0}
+            max={10}
+            step={1}
+            label={`${100 * 2 ** xScaleFactor}%`}
+            marks={[
+              { value: 0 },
+              { value: 1 },
+              { value: 2 },
+              { value: 3 },
+              { value: 4 },
+              { value: 5 },
+              { value: 6 },
+              { value: 7 },
+              { value: 8 },
+              { value: 9 },
+              { value: 10 },
+            ]}
+          />
         </Stack>
 
         <Switch
