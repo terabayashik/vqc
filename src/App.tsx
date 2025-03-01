@@ -1,29 +1,48 @@
-import { Button, Stack, Text, TextInput } from "@mantine/core";
-import { invoke } from "@tauri-apps/api/core";
+import { Stack } from "@mantine/core";
 import { useState } from "react";
+import { ChartPane } from "./components/ChartPane";
+import { FilePane } from "./components/FilePane";
+import type { Stats } from "./schema";
 
 export const App = () => {
-  const [greetMsg, setGreetMsg] = useState("");
-  const [name, setName] = useState("");
+  const [pane, setPane] = useState<"filePane" | "chartPane">("filePane");
+  const [reference, setReference] = useState<string | null>(null);
+  const [comparisons, setComparisons] = useState<string[] | null>(null);
+  const [analyzeResults, setAnalyzeResults] = useState<{ comparison: string; stats: Stats }[] | null>(null);
 
-  async function greet() {
-    // Learn more about Tauri commands at https://tauri.app/develop/calling-rust/
-    setGreetMsg(await invoke("greet", { name }));
-  }
+  const handleReferencelDrop = (file: string | null) => {
+    setReference(file);
+  };
+
+  const handleComparisonsDrop = (files: string[] | null) => {
+    setComparisons(files);
+  };
+
+  const handleAnalyzeComplete = (results: { comparison: string; stats: Stats }[]) => {
+    setAnalyzeResults(results);
+    setPane("chartPane");
+  };
+
+  const handleBack = () => {
+    setReference(null);
+    setComparisons(null);
+    setAnalyzeResults(null);
+    setPane("filePane");
+  };
 
   return (
-    <Stack p={8}>
-      <Text>Hello</Text>
-      <Button onClick={greet}>Greet</Button>
-      <Text>{greetMsg}</Text>
-      <TextInput
-        label="Input label"
-        description="Input description"
-        placeholder="Input placeholder"
-        onChange={(event) => {
-          setName(event.currentTarget.value);
-        }}
-      />
+    <Stack h="100vh" p="lg">
+      {pane === "filePane" && (
+        <FilePane
+          reference={reference}
+          comparisons={comparisons}
+          onReferenceDrop={handleReferencelDrop}
+          onComparisonsDrop={handleComparisonsDrop}
+          onAnalyzeComplete={handleAnalyzeComplete}
+        />
+      )}
+
+      {pane === "chartPane" && <ChartPane data={analyzeResults || []} onBack={handleBack} />}
     </Stack>
   );
 };
