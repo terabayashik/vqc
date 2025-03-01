@@ -1,3 +1,4 @@
+import { invoke } from "@tauri-apps/api/core";
 import { BaseDirectory, appCacheDir, join } from "@tauri-apps/api/path";
 import { mkdir, readTextFile } from "@tauri-apps/plugin-fs";
 import { Command } from "@tauri-apps/plugin-shell";
@@ -7,6 +8,7 @@ export const analyze = async (refVideo: string, compVideo: string): Promise<Stat
   await mkdir("vmaf", { baseDir: BaseDirectory.AppCache, recursive: true });
   const appCacheDirPath = await appCacheDir();
   const outputPath = await join(appCacheDirPath, "vmaf", `vmaf_${Date.now()}.log`);
+  const threads = await invoke<number>("get_available_threads");
 
   const command = Command.sidecar("bin/ffmpeg", [
     "-i",
@@ -14,7 +16,7 @@ export const analyze = async (refVideo: string, compVideo: string): Promise<Stat
     "-i",
     refVideo,
     "-lavfi",
-    `libvmaf=log_fmt=json:log_path=${outputPath}:n_threads=8`,
+    `libvmaf=log_fmt=json:log_path=${outputPath}:n_threads=${threads}`,
     "-f",
     "null",
     "-",
