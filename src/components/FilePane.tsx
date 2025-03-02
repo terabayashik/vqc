@@ -123,10 +123,10 @@ export const FilePane = ({
 
             enableOverlay();
             const results: { comparison: string; stats: Stats }[] = [];
-            for (const comparison of comparisons) {
+            for (const [index, comparison] of comparisons.entries()) {
+              setProgress(index + 1);
               const stats = await analyze(reference, comparison);
               results.push({ comparison, stats });
-              setProgress(progress + 1);
             }
             disableOverlay();
             onAnalyzeComplete(results);
