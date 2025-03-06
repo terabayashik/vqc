@@ -18,7 +18,7 @@ bash scripts/download_ffmpeg.sh
 
 ### Windows
 ```powershell
-pwsh Download-Ffmpeg.ps1
+pwsh scripts\Download-Ffmpeg.ps1
 ```
 
 # Development
