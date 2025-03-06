@@ -9,7 +9,7 @@ const pooledMetricsSchema = z.object({
 
 export const statsSchema = z.object({
   version: z.string(),
-  fps: z.number(),
+  fps: z.number().optional(),
   frames: z.array(
     z.object({
       frameNum: z.number(),
