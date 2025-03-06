@@ -11,7 +11,7 @@ Download executables from [releases](https://github.com/terabayashik/vqc/release
 
 Run script below. These scripts let you put ffmpeg binary to `src-tauri/bin`.
 > [!WARNING]
-> Windows and Linux on Arm is not supported.
+> Windows and Linux on Arm are not supported.
 
 ### macOS / Linux
 ```sh
