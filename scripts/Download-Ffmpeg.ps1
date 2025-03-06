@@ -19,6 +19,11 @@ Expand-Archive -Path $ffmpegZipFile -DestinationPath .
 # Locate the extracted folder
 $ffmpegFolder = Get-ChildItem -Directory -Recurse | Where-Object { $_.Name -like $ffmpegFolderWildcard } | Select-Object -First 1
 
+# Ensure the destination folder exists
+if (-not (Test-Path $destinationFolder)) {
+    New-Item -Path $destinationFolder -ItemType Directory
+}
+
 # Copy the FFmpeg executable to the destination folder and rename it
 Copy-Item -Path "$($ffmpegFolder.FullName)\bin\$ffmpegExe" -Destination "$destinationFolder\$destinationExe" -Force
 
