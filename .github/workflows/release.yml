@@ -32,6 +32,9 @@ jobs:
         with:
           node-version: lts/*
 
+      - name: Install pnpm
+        run: npm i -g pnpm
+
       - name: install Rust stable
         uses: dtolnay/rust-toolchain@stable
         with:
@@ -47,7 +50,7 @@ jobs:
       - name: download ffmpeg (ubuntu and macOS only)
         if: matrix.platform == 'macos-latest' || matrix.platform == 'ubuntu-22.04'
         run: |
-          scripts/download-ffmpeg.sh
+          scripts/download_ffmpeg.sh
 
       - name: download ffmpeg (windows only)
         if: matrix.platform == 'windows-latest'
