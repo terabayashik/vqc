@@ -1,37 +1,27 @@
 # VQC - Video Quality Checker
 
+![Chart](./docs/assets/chart.png)
+
+
 # Prerequisites
 
-## FFmpeg
+## Download static FFmpeg binary
 
-Ensure `ffmpeg` binary exists in `./src-tauri/bin`.
+Run script below. These scripts let you put ffmpeg binary to `src-tauri/bin`.
+> [!WARNING]
+> Windows and Linux on Arm is not supported.
 
-- Linux (x64)
-    ```sh
-    mkdir src-tauri/bin
-    curl -O https://johnvansickle.com/ffmpeg/releases/ffmpeg-release-amd64-static.tar.xz
-    tar xf ffmpeg-release-amd64-static.tar.xz
-    mv ffmpeg-*-static/ffmpeg src-tauri/bin/ffmpeg-x86_64-unknown-linux-gnu
-    rm -rf ffmpeg-*-static ffmpeg-release-amd64-static.tar.xz
-    ```
+### macOS / Linux
+```sh
+bash scripts/download_ffmpeg.sh
+```
 
-- Linux (aarch64)
-    ```sh
-    mkdir src-tauri/bin
-    curl -O https://johnvansickle.com/ffmpeg/releases/ffmpeg-release-arm64-static.tar.xz
-    tar xf ffmpeg-release-arm64-static.tar.xz
-    mv ffmpeg-*-static/ffmpeg src-tauri/bin/ffmpeg-aarch64-unknown-linux-gnu
-    rm -rf ffmpeg-*-static ffmpeg-release-amd64-static.tar.xz
-    ```
+### Windows
+```powershell
+pwsh Download-Ffmpeg.ps1
+```
 
-- macOS (Apple Silicon)
-    ```sh
-    mkdir src-tauri/bin
-    curl -O https://www.osxexperts.net/ffmpeg71arm.zip
-    unzip ffmpeg71arm.zip
-    mv ffmpeg src-tauri/bin/ffmpeg-aarch64-apple-darwin
-    rm -rf ffmpeg71arm.zip __MACOSX
-    ```
-
-<!-- windows-x64: https://www.gyan.dev/ffmpeg/builds/ffmpeg-release-essentials.zip -->
-<!-- macos-x64: https://www.osxexperts.net/ffmpeg71intel.zip -->
+# Development
+```sh
+pnpm tauri:dev
+```
