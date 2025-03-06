@@ -50,12 +50,12 @@ jobs:
       - name: download ffmpeg (ubuntu and macOS only)
         if: matrix.platform == 'macos-latest' || matrix.platform == 'ubuntu-22.04'
         run: |
-          scripts/download_ffmpeg.sh
+          bash scripts/download_ffmpeg.sh
 
       - name: download ffmpeg (windows only)
         if: matrix.platform == 'windows-latest'
         run: |
-          scripts\Download-Ffmpeg.ps1
+          pwsh scripts\Download-Ffmpeg.ps1
 
       - name: install frontend dependencies
         run: pnpm install
