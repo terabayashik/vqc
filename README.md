@@ -1,7 +1,9 @@
 # VQC - Video Quality Checker
 
-![Chart](./docs/assets/chart.png)
+Visualyze [VMAF](https://github.com/Netflix/vmaf).
+Download executables from [releases](https://github.com/terabayashik/vqc/releases).
 
+![Chart](./docs/assets/chart.png)
 
 # Prerequisites
 
