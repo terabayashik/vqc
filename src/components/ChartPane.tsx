@@ -1,6 +1,8 @@
 import { LineChart } from "@mantine/charts";
 import { Button, Chip, Group, type MantineColor, ScrollArea, Slider, Space, Stack, Switch, Text } from "@mantine/core";
 import { basename } from "@tauri-apps/api/path";
+import { save } from "@tauri-apps/plugin-dialog";
+import { writeTextFile } from "@tauri-apps/plugin-fs";
 import { useEffect, useState } from "react";
 import type { Stats } from "../schema";
 
@@ -150,7 +152,22 @@ export const ChartPane = ({ data, onBack }: ChartPaneProps) => {
           }}
         />
         <Space flex={1} />
-        <Button variant="outline" onClick={onBack}>
+        <Button
+          onClick={async () => {
+            const filePath = await save({
+              canCreateDirectories: true,
+              filters: [{ name: "JSON", extensions: ["json"] }],
+            });
+            if (!filePath) {
+              return;
+            }
+            console.log(filePath);
+            await writeTextFile(filePath, JSON.stringify(data));
+          }}
+        >
+          保存
+        </Button>
+        <Button variant="default" onClick={onBack}>
           戻る
         </Button>
       </Group>

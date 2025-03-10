@@ -46,3 +46,9 @@ export const statsSchema = z.object({
   aggregate_metrics: z.object({}),
 });
 export type Stats = z.infer<typeof statsSchema>;
+
+export const analyzeResultSchema = z.object({
+  comparison: z.string(),
+  stats: statsSchema,
+});
+export type AnalyzeResult = z.infer<typeof analyzeResultSchema>;

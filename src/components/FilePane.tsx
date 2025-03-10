@@ -2,9 +2,10 @@ import { Box, Button, Center, Divider, Group, Loader, LoadingOverlay, Stack, Tex
 import { useDisclosure } from "@mantine/hooks";
 import { basename } from "@tauri-apps/api/path";
 import { open } from "@tauri-apps/plugin-dialog";
+import { readTextFile } from "@tauri-apps/plugin-fs";
 import { useEffect, useState } from "react";
 import { analyze } from "../ffmpeg";
-import type { Stats } from "../schema";
+import { type AnalyzeResult, type Stats, analyzeResultSchema } from "../schema";
 
 interface FilePaneProps {
   reference: string | null;
@@ -112,7 +113,21 @@ export const FilePane = ({
           </Stack>
         </Center>
       </Group>
-      <Group justify="flex-end">
+      <Group justify="space-between">
+        <Button
+          variant="default"
+          onClick={async () => {
+            const selected = await open({ multiple: false });
+            if (!selected) {
+              return;
+            }
+            const data = await readTextFile(selected);
+            const results = analyzeResultSchema.array().parse(JSON.parse(data));
+            onAnalyzeComplete(results);
+          }}
+        >
+          開く
+        </Button>
         <Button
           variant="gradient"
           disabled={!reference || comparisons === null}
@@ -120,9 +135,8 @@ export const FilePane = ({
             if (!reference || comparisons === null) {
               return;
             }
-
             enableOverlay();
-            const results: { comparison: string; stats: Stats }[] = [];
+            const results: AnalyzeResult[] = [];
             for (const [index, comparison] of comparisons.entries()) {
               setProgress(index + 1);
               const stats = await analyze(reference, comparison);
