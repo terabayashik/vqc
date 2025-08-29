@@ -13,34 +13,37 @@
     "preinstall": "npx only-allow pnpm"
   },
   "dependencies": {
-    "@mantine/charts": "^7.17.1",
-    "@mantine/core": "^7.17.1",
-    "@mantine/hooks": "^7.17.1",
-    "@tabler/icons-react": "^3.31.0",
-    "@tauri-apps/api": "^2.3.0",
-    "@tauri-apps/plugin-dialog": "~2.2.0",
-    "@tauri-apps/plugin-fs": "~2.2.0",
-    "@tauri-apps/plugin-opener": "^2.2.6",
-    "@tauri-apps/plugin-shell": "~2.2.0",
-    "react": "^19.0.0",
-    "react-dom": "^19.0.0",
-    "recharts": "^2.15.1",
-    "zod": "^3.24.2"
+    "@mantine/charts": "^7.17.8",
+    "@mantine/core": "^7.17.8",
+    "@mantine/hooks": "^7.17.8",
+    "@tabler/icons-react": "^3.34.1",
+    "@tauri-apps/api": "^2.8.0",
+    "@tauri-apps/plugin-dialog": "~2.2.2",
+    "@tauri-apps/plugin-fs": "~2.2.1",
+    "@tauri-apps/plugin-opener": "^2.5.0",
+    "@tauri-apps/plugin-shell": "~2.2.2",
+    "react": "^19.1.1",
+    "react-dom": "^19.1.1",
+    "recharts": "^2.15.4",
+    "zod": "^3.25.76"
   },
   "devDependencies": {
     "@biomejs/biome": "1.9.4",
-    "@tauri-apps/cli": "^2.3.1",
-    "@types/react": "^19.0.10",
-    "@types/react-dom": "^19.0.4",
-    "@vitejs/plugin-react": "^4.3.4",
-    "postcss": "^8.5.3",
-    "postcss-preset-mantine": "^1.17.0",
+    "@tauri-apps/cli": "^2.8.3",
+    "@types/react": "^19.1.12",
+    "@types/react-dom": "^19.1.9",
+    "@vitejs/plugin-react": "^4.7.0",
+    "postcss": "^8.5.6",
+    "postcss-preset-mantine": "^1.18.0",
     "postcss-simple-vars": "^7.0.1",
-    "typescript": "~5.8.2",
-    "vite": "^6.2.1"
+    "typescript": "~5.8.3",
+    "vite": "^6.3.5"
   },
   "pnpm": {
-    "onlyBuiltDependencies": ["@biomejs/biome", "esbuild"]
+    "onlyBuiltDependencies": [
+      "@biomejs/biome",
+      "esbuild"
+    ]
   },
   "packageManager": "pnpm@9.14.4+sha512.c8180b3fbe4e4bca02c94234717896b5529740a6cbadf19fa78254270403ea2f27d4e1d46a08a0f56c89b63dc8ebfd3ee53326da720273794e6200fcf0d184ab"
 }
