@@ -1,5 +1,5 @@
 import { invoke } from "@tauri-apps/api/core";
-import { BaseDirectory, appCacheDir, join, sep } from "@tauri-apps/api/path";
+import { appCacheDir, BaseDirectory, join, sep } from "@tauri-apps/api/path";
 import { mkdir, readTextFile } from "@tauri-apps/plugin-fs";
 import { Command } from "@tauri-apps/plugin-shell";
 import { type Stats, statsSchema } from "./schema";

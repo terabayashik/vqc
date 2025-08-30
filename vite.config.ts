@@ -5,7 +5,6 @@ import { defineConfig } from "vite";
 const host = process.env.TAURI_DEV_HOST;
 
 // https://vitejs.dev/config/
-// biome-ignore lint/style/noDefaultExport: <explanation>
 export default defineConfig(async () => ({
   plugins: [react()],
 
@@ -17,7 +16,6 @@ export default defineConfig(async () => ({
   server: {
     port: 1420,
     strictPort: true,
-    // biome-ignore lint/complexity/useSimplifiedLogicExpression: <explanation>
     host: host || false,
     hmr: host
       ? {

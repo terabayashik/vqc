@@ -5,7 +5,7 @@ import { open } from "@tauri-apps/plugin-dialog";
 import { readTextFile } from "@tauri-apps/plugin-fs";
 import { useEffect, useState } from "react";
 import { analyze } from "../ffmpeg";
-import { type AnalyzeResult, type Stats, analyzeResultSchema } from "../schema";
+import { type AnalyzeResult, analyzeResultSchema, type Stats } from "../schema";
 
 interface FilePaneProps {
   reference: string | null;
