@@ -3,7 +3,7 @@ import { Button, Chip, Group, type MantineColor, ScrollArea, Slider, Space, Stac
 import { basename } from "@tauri-apps/api/path";
 import { save } from "@tauri-apps/plugin-dialog";
 import { writeTextFile } from "@tauri-apps/plugin-fs";
-import { useEffect, useState } from "react";
+import { memo, useEffect, useMemo, useState } from "react";
 import type { Stats } from "../schema";
 
 const colors: MantineColor[] = [
@@ -32,19 +32,21 @@ type FrameData = {
   [key: string]: number;
 };
 
-export const ChartPane = ({ data, onBack }: ChartPaneProps) => {
+export const ChartPane = memo(({ data, onBack }: ChartPaneProps) => {
   const [dataToPlot, setDataToPlot] = useState<FrameData[]>([]);
   const [comparisonBasenames, setComparisonBasenames] = useState<string[] | null>(null);
   const [selectedComparisons, setSelectedComparisons] = useState<string[]>([]);
   const [xScaleFactor, setXScaleFactor] = useState(0);
   const [yAxisAutoScale, setYAxisAutoScale] = useState(false);
 
-  const minVmaf = data.reduce((acc, item) => {
-    const min = item.stats.frames.reduce((acc, frame) => {
-      return Math.min(acc, frame.metrics.vmaf);
+  const minVmaf = useMemo(() => {
+    return data.reduce((acc, item) => {
+      const min = item.stats.frames.reduce((acc, frame) => {
+        return Math.min(acc, frame.metrics.vmaf);
+      }, Number.POSITIVE_INFINITY);
+      return Math.min(acc, min);
     }, Number.POSITIVE_INFINITY);
-    return Math.min(acc, min);
-  }, Number.POSITIVE_INFINITY);
+  }, [data]);
 
   useEffect(() => {
     const comparisons = data.map((d) => d.comparison);
@@ -154,15 +156,19 @@ export const ChartPane = ({ data, onBack }: ChartPaneProps) => {
         <Space flex={1} />
         <Button
           onClick={async () => {
-            const filePath = await save({
-              canCreateDirectories: true,
-              filters: [{ name: "JSON", extensions: ["json"] }],
-            });
-            if (!filePath) {
-              return;
+            try {
+              const filePath = await save({
+                canCreateDirectories: true,
+                filters: [{ name: "JSON", extensions: ["json"] }],
+              });
+              if (!filePath) {
+                return;
+              }
+              await writeTextFile(filePath, JSON.stringify(data));
+              alert("ファイルを保存しました");
+            } catch (error) {
+              alert(`保存中にエラーが発生しました: ${error instanceof Error ? error.message : String(error)}`);
             }
-            console.log(filePath);
-            await writeTextFile(filePath, JSON.stringify(data));
           }}
         >
           保存
@@ -173,4 +179,4 @@ export const ChartPane = ({ data, onBack }: ChartPaneProps) => {
       </Group>
     </Stack>
   );
-};
+});

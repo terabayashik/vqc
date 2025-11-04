@@ -117,13 +117,17 @@ export const FilePane = ({
         <Button
           variant="default"
           onClick={async () => {
-            const selected = await open({ multiple: false });
-            if (!selected) {
-              return;
+            try {
+              const selected = await open({ multiple: false });
+              if (!selected) {
+                return;
+              }
+              const data = await readTextFile(selected);
+              const results = analyzeResultSchema.array().parse(JSON.parse(data));
+              onAnalyzeComplete(results);
+            } catch (error) {
+              alert(`ファイルの読み込みに失敗しました: ${error instanceof Error ? error.message : String(error)}`);
             }
-            const data = await readTextFile(selected);
-            const results = analyzeResultSchema.array().parse(JSON.parse(data));
-            onAnalyzeComplete(results);
           }}
         >
           開く
@@ -136,14 +140,19 @@ export const FilePane = ({
               return;
             }
             enableOverlay();
-            const results: AnalyzeResult[] = [];
-            for (const [index, comparison] of comparisons.entries()) {
-              setProgress(index + 1);
-              const stats = await analyze(reference, comparison);
-              results.push({ comparison, stats });
+            try {
+              const results: AnalyzeResult[] = [];
+              for (const [index, comparison] of comparisons.entries()) {
+                setProgress(index + 1);
+                const stats = await analyze(reference, comparison);
+                results.push({ comparison, stats });
+              }
+              disableOverlay();
+              onAnalyzeComplete(results);
+            } catch (error) {
+              disableOverlay();
+              alert(`解析中にエラーが発生しました: ${error instanceof Error ? error.message : String(error)}`);
             }
-            disableOverlay();
-            onAnalyzeComplete(results);
           }}
         >
           解析開始

@@ -10,7 +10,7 @@ export const App = () => {
   const [comparisons, setComparisons] = useState<string[] | null>(null);
   const [analyzeResults, setAnalyzeResults] = useState<{ comparison: string; stats: Stats }[] | null>(null);
 
-  const handleReferencelDrop = (file: string | null) => {
+  const handleReferenceDrop = (file: string | null) => {
     setReference(file);
   };
 
@@ -36,7 +36,7 @@ export const App = () => {
         <FilePane
           reference={reference}
           comparisons={comparisons}
-          onReferenceDrop={handleReferencelDrop}
+          onReferenceDrop={handleReferenceDrop}
           onComparisonsDrop={handleComparisonsDrop}
           onAnalyzeComplete={handleAnalyzeComplete}
         />
